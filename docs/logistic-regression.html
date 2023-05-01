@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Breast Canser</title>
-  <meta name="description" content="Breast Canser" />
+  <title>Chapter 3 Logistic Regression | Breast Canser</title>
+  <meta name="description" content="Chapter 3 Logistic Regression | Breast Canser" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Breast Canser" />
+  <meta property="og:title" content="Chapter 3 Logistic Regression | Breast Canser" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Breast Canser" />
+  <meta name="twitter:title" content="Chapter 3 Logistic Regression | Breast Canser" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="k-nearest-neighbors.html"/>
+<link rel="prev" href="k-nearest-neighbors.html"/>
+<link rel="next" href="random-forest.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -120,49 +120,52 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Breast Canser</h1>
-<p class="author"><em>Wang Ruiqi</em></p>
-<p class="date"><em>2023-05-01</em></p>
+<div id="logistic-regression" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Logistic Regression<a href="logistic-regression.html#logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="general-logistic-regression-model" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> General Logistic Regression Model<a href="logistic-regression.html#general-logistic-regression-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The second model we are going to use is the <strong>Logistic Regression Model</strong>.</p>
+<p>We first build Logistic Regression model based on all the sleceted variables: <code>tumor_zise</code>, <code>age</code>, <code>inv_nodes</code>, <code>deg_malig</code>.</p>
+<p>The train_dataset: test_dataset = 8:2.</p>
+<pre><code>## # weights:  6 (5 variable)
+## initial  value 153.878674 
+## iter  10 value 114.232266
+## final  value 114.226396 
+## converged</code></pre>
+<pre><code>## Call:
+## nnet::multinom(formula = class ~ ., data = train.X)
+## 
+## Coefficients:
+##                 Values Std. Err.
+## (Intercept) -1.1504766 0.1804155
+## age         -0.2245484 0.1664308
+## inv_nodes    0.3202189 0.1626934
+## tumor_size   0.1335999 0.1733618
+## deg_malig    0.7702525 0.1920156
+## 
+## Residual Deviance: 228.4528 
+## AIC: 238.4528</code></pre>
+<p>We can conclude the specific model is: <span class="math inline">\(p(reoccur|x_1,x_2,x_3,x_4)=e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}/(1+e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4})\)</span></p>
+<pre><code>## The prediction error rate is: 0.2363636</code></pre>
+<p>From the AIC and Residual Deviance and the error rate on test dataset, we can see the model is not that ideal, and we then visualize the prediction outcomes to check the specific situation.</p>
+<p>Due to a multifactor logistic regression, here we define
+<span class="math inline">\(temp = -1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4\)</span></p>
+<p>We make plot that class versus temp values, then the <strong>cut-off line</strong> would be <span class="math inline">\(temp=0\)</span>, where
+<span class="math inline">\(e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}=1\)</span>.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>We can see that when in class <code>noreoccur</code>, the prediction is quite perfect, while all the errors happened in the class <code>reoccur</code>, the prediction is quite different with the truth. Inspired by the partial dependency, we can also plot the distribution of each factor to check the effect of the factor for classification.</p>
 </div>
-<div id="proposal" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Proposal<a href="index.html#proposal" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><img src="1.jpg" /></p>
-<div id="breast-cancer-data" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Breast Cancer Data<a href="index.html#breast-cancer-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><a href="https://archive.ics.uci.edu/ml/datasets/Breast+Cancer">The Original Dataset Link</a></p>
-<div id="describtion" class="section level3 hasAnchor" number="1.1.1">
-<h3><span class="header-section-number">1.1.1</span> Describtion<a href="index.html#describtion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This is one of three domains provided by the Oncology Institute that has repeatedly appeared in the machine learning literature. (See also lymphography and primary-tumor.)</p>
-<p>This data set includes <code>201 instances</code> of one class and <code>85 instances</code> of another class. The instances are described by 9 attributes, some of which are linear and some are nominal.</p>
+<div id="logistic-regression-model-based-on-single-variable" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Logistic Regression Model Based on Single Variable<a href="logistic-regression.html#logistic-regression-model-based-on-single-variable" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>In our Multi Factors Logistic model,we take the class <code>noreoccur</code> as the reference, and we can see all these four factors do not have very significantly differences in distributions between two class, the most obvious factor is <code>age</code>, we can see that if the model only judge the class based on <code>age</code>, the prediction would all be class <code>noreoccur</code>, which indicates the age distribution may be very similar in two classes, also we can conclude the cancer reoccurrence rate may have little relation with <code>age</code>.</p>
+<p>And the best factor we can say from the above figures is <code>inv_nodes</code>, because the model more possibility to predict the sample as class <code>reoccur</code>. While the rest three factors would have less possibility to predict the sample as class <code>reoccur</code>. This tendency of distribution manily leads to that the logistic model based on all four factors may not tell the difference of two classes and have a tendency to predcit the sample as class <code>noreoccur</code>. We can also study the features of correct predictions to prove this.</p>
 </div>
-<div id="attribute-information" class="section level3 hasAnchor" number="1.1.2">
-<h3><span class="header-section-number">1.1.2</span> Attribute Information<a href="index.html#attribute-information" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul class="task-list">
-<li><input type="checkbox" /><code>class:</code> no-recurrence-events, recurrence-events</li>
-<li><input type="checkbox" /><code>age:</code> 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, 70-79, 80-89, 90-99.</li>
-<li><input type="checkbox" /><code>menopose:</code>lt40, ge40, premeno.</li>
-<li><input type="checkbox" /><code>tumor-size:</code> 0-4, 5-9, 10-14, 15-19, 20-24, 25-29, 30-34, 35-39, 40-44, 45-49, 50-54, 55-59.</li>
-<li><input type="checkbox" /><code>inv-nodes:</code> 0-2, 3-5, 6-8, 9-11, 12-14, 15-17, 18-20, 21-23, 24-26, 27-29, 30-32, 33-35, 36-39.</li>
-<li><input type="checkbox" /><code>node-caps:</code>yes, no.</li>
-<li><input type="checkbox" /><code>deg-malig:</code> 1, 2, 3.</li>
-<li><input type="checkbox" /><code>breast:</code> left, right.</li>
-<li><input type="checkbox" /><code>breast-quad:</code> left-up, left-low, right-up, right-low, central.</li>
-<li><input type="checkbox" /><code>irradiat:</code> yes, no.</li>
-</ul>
-</div>
-</div>
-<div id="the-modeling-goal" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> The modeling goal<a href="index.html#the-modeling-goal" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To predict if there is a breast cancer recurrence based on features age,tumor-size, inv-nodes…</p>
-</div>
-<div id="the-models-for-using" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> The models for using<a href="index.html#the-models-for-using" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li><code>Logistic Regression</code></li>
-<li><code>KNN</code></li>
-<li><code>Random forest</code></li>
-</ul>
+<div id="feature-distribution" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Feature Distribution<a href="logistic-regression.html#feature-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here we again plot the distribution of different features, and we use different color to represent the correct and wrong predictions,</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Again, we can see in class <code>reoccur</code>, the correct prediction mostly happened in samples with unique values of factors, specially for feature <code>inv_nodes</code>, the correct predicted sample in class <code>reoccur</code> seems to have far distance with the other samples in class <code>reoccur</code>.</p>
 
 </div>
 </div>
@@ -171,8 +174,8 @@
           </div>
         </div>
       </div>
-
-<a href="k-nearest-neighbors.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="k-nearest-neighbors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="random-forest.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -203,7 +206,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ReallaggyWang/Breast-Cancer/edit/main/index.Rmd",
+"link": "https://github.com/ReallaggyWang/Breast-Cancer/edit/main/model2.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -211,7 +214,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/ReallaggyWang/Breast-Cancer/blob/main/index.Rmd",
+"link": "https://github.com/ReallaggyWang/Breast-Cancer/blob/main/model2.Rmd",
 "text": null
 },
 "download": null,

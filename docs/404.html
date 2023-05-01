@@ -23,7 +23,7 @@
 <meta name="author" content="Wang Ruiqi" />
 
 
-<meta name="date" content="2023-03-23" />
+<meta name="date" content="2023-05-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -82,9 +82,24 @@
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#the-modeling-goal"><i class="fa fa-check"></i><b>1.2</b> The modeling goal</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#the-models-for-using"><i class="fa fa-check"></i><b>1.3</b> The models for using</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="model-1.html"><a href="model-1.html"><i class="fa fa-check"></i><b>2</b> [Model 1]</a></li>
-<li class="chapter" data-level="3" data-path="model-2.html"><a href="model-2.html"><i class="fa fa-check"></i><b>3</b> [Model 2]</a></li>
-<li class="chapter" data-level="4" data-path="model-3.html"><a href="model-3.html"><i class="fa fa-check"></i><b>4</b> [Model 3]</a></li>
+<li class="chapter" data-level="2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>2</b> K Nearest Neighbors</a></li>
+<li class="chapter" data-level="3" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>3</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="logistic-regression.html"><a href="logistic-regression.html#general-logistic-regression-model"><i class="fa fa-check"></i><b>3.1</b> General Logistic Regression Model</a></li>
+<li class="chapter" data-level="3.2" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression-model-based-on-single-variable"><i class="fa fa-check"></i><b>3.2</b> Logistic Regression Model Based on Single Variable</a></li>
+<li class="chapter" data-level="3.3" data-path="logistic-regression.html"><a href="logistic-regression.html#feature-distribution"><i class="fa fa-check"></i><b>3.3</b> Feature Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="random-forest.html"><a href="random-forest.html"><i class="fa fa-check"></i><b>4</b> Random Forest</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="random-forest.html"><a href="random-forest.html#general-random-forest-model"><i class="fa fa-check"></i><b>4.1</b> General Random Forest Model</a></li>
+<li class="chapter" data-level="4.2" data-path="random-forest.html"><a href="random-forest.html#reduced-random-forest-model"><i class="fa fa-check"></i><b>4.2</b> Reduced Random Forest Model</a></li>
+<li class="chapter" data-level="4.3" data-path="random-forest.html"><a href="random-forest.html#shapley-values"><i class="fa fa-check"></i><b>4.3</b> Shapley Values</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="random-forest.html"><a href="random-forest.html#shap-plot-with-one-instance"><i class="fa fa-check"></i><b>4.3.1</b> SHAP plot with one instance</a></li>
+<li class="chapter" data-level="4.3.2" data-path="random-forest.html"><a href="random-forest.html#shap-plot-with-more-instances"><i class="fa fa-check"></i><b>4.3.2</b> SHAP plot with more instances</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="random-forest.html"><a href="random-forest.html#partial-dependecy"><i class="fa fa-check"></i><b>4.4</b> Partial Dependecy</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>5</b> Reflections</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -171,6 +186,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Random Forest | Breast Canser</title>
+  <meta name="description" content="Chapter 4 Random Forest | Breast Canser" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Random Forest | Breast Canser" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Random Forest | Breast Canser" />
+  
+  
+  
+
+<meta name="author" content="Wang Ruiqi" />
+
+
+<meta name="date" content="2023-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="logistic-regression.html"/>
+<link rel="next" href="reflections.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">SHORT TITLE HERE</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Proposal</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#breast-cancer-data"><i class="fa fa-check"></i><b>1.1</b> Breast Cancer Data</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#describtion"><i class="fa fa-check"></i><b>1.1.1</b> Describtion</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#attribute-information"><i class="fa fa-check"></i><b>1.1.2</b> Attribute Information</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#the-modeling-goal"><i class="fa fa-check"></i><b>1.2</b> The modeling goal</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#the-models-for-using"><i class="fa fa-check"></i><b>1.3</b> The models for using</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>2</b> K Nearest Neighbors</a></li>
+<li class="chapter" data-level="3" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>3</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="logistic-regression.html"><a href="logistic-regression.html#general-logistic-regression-model"><i class="fa fa-check"></i><b>3.1</b> General Logistic Regression Model</a></li>
+<li class="chapter" data-level="3.2" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression-model-based-on-single-variable"><i class="fa fa-check"></i><b>3.2</b> Logistic Regression Model Based on Single Variable</a></li>
+<li class="chapter" data-level="3.3" data-path="logistic-regression.html"><a href="logistic-regression.html#feature-distribution"><i class="fa fa-check"></i><b>3.3</b> Feature Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="random-forest.html"><a href="random-forest.html"><i class="fa fa-check"></i><b>4</b> Random Forest</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="random-forest.html"><a href="random-forest.html#general-random-forest-model"><i class="fa fa-check"></i><b>4.1</b> General Random Forest Model</a></li>
+<li class="chapter" data-level="4.2" data-path="random-forest.html"><a href="random-forest.html#reduced-random-forest-model"><i class="fa fa-check"></i><b>4.2</b> Reduced Random Forest Model</a></li>
+<li class="chapter" data-level="4.3" data-path="random-forest.html"><a href="random-forest.html#shapley-values"><i class="fa fa-check"></i><b>4.3</b> Shapley Values</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="random-forest.html"><a href="random-forest.html#shap-plot-with-one-instance"><i class="fa fa-check"></i><b>4.3.1</b> SHAP plot with one instance</a></li>
+<li class="chapter" data-level="4.3.2" data-path="random-forest.html"><a href="random-forest.html#shap-plot-with-more-instances"><i class="fa fa-check"></i><b>4.3.2</b> SHAP plot with more instances</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="random-forest.html"><a href="random-forest.html#partial-dependecy"><i class="fa fa-check"></i><b>4.4</b> Partial Dependecy</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>5</b> Reflections</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Breast Canser</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="random-forest" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Random Forest<a href="random-forest.html#random-forest" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="general-random-forest-model" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> General Random Forest Model<a href="random-forest.html#general-random-forest-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The third model we are going to use is the <strong>Random Forest</strong>.</p>
+<p>We first build Random Forest model based on all the variables and the train_dataset: test_dataset = 8:2.</p>
+<p>Let’s first see the error evolution vs. number of trees of the general model:</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Where we can see the general trend of the error in model is decreasing, and next we would use the test dataset to obtain the confusion matrix and AUC value of the model to evaluate the performance of the model:</p>
+<pre><code>## [1] &quot;Area under curve (AUC) : 0.556&quot;</code></pre>
+<p>Above is the AUC value of the random forest model, where we can say is not ideal, and the value 0.556 mostly means the model is random somehow, next we would focus on the confusion matrix to tee the specific predicting situation:</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>We can conclude from the confusion matrix that the model still has a preference to predict class <code>reoccur</code> as class <code>noreoccur</code>, more specifically, in predictions, there are 50 samples to be considered as class <code>noreoccur</code> and only 5 samples to be considered as class <code>reoccur</code>.If we want to answer what has lead to this result, we may need to study the features.</p>
+<p>We focus on the importance of different features:
+<img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>As we can see from the figure above, features <code>tumor_size</code>,<code>age</code>,<code>inv_nodes</code>,<code>deg_malig</code> still are the main contributing factors.</p>
+</div>
+<div id="reduced-random-forest-model" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Reduced Random Forest Model<a href="random-forest.html#reduced-random-forest-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So does this mean if we remove the less influential features and build the model <em>(which means we use the same features like that in model1 and model2)</em> on them would have a better model performance? in other words, we want to know that whether removing these less influential features can reduce the model tendency of predicting samples as class <code>noreoccur</code>.</p>
+<p>We rebuild the random forest model and see the AUC value and the confusion matrix,</p>
+<pre><code>## [1] &quot;Area under curve (AUC) : 0.516&quot;</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Still, though we have more predictions of class <code>reoccur</code>, the model has a preference to predict class <code>reoccur</code> as class <code>noreoccur</code>.</p>
+</div>
+<div id="shapley-values" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Shapley Values<a href="random-forest.html#shapley-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For the preference of the model, here we discuss the Shapley values to study how to fairly distribute the “payout” among features.</p>
+<div id="shap-plot-with-one-instance" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> SHAP plot with one instance<a href="random-forest.html#shap-plot-with-one-instance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We first plot the Shapley values for one instance,</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+Let’s check the prediction of the sample:</p>
+<pre><code>## [1] 0.824</code></pre>
+<p>We can see the model consider the sample has a probability of 82.4% to be class <code>noreoccur</code> , and take a perspective of all the features, the general trend is that most features make more contributions in predicting class <code>noreoccur</code>, that’s very important for us to explain why the model prefer to predict the samples as class <code>noreoccur</code>. Especially for the feature <code>tumor_size</code>, <code>age</code> and <code>inv_nodes</code>, which are the three most important features for the model, they all have a huge magnitude of the SHAP values and this indicates their strength of the contribution to predict sample as class <code>noreoccur</code>, that’s very important for us to explain why the model think the sample is highly possible to be class <code>noreoccur</code>.</p>
+</div>
+<div id="shap-plot-with-more-instances" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> SHAP plot with more instances<a href="random-forest.html#shap-plot-with-more-instances" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To study the effect of features deeper, we start to plot the Shapley values for more instances (we use the same instance with previous part),</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>Here we take class <code>noreoccur</code> as the positive reference. Surprisingly, many factors like <code>deg_malig</code>, <code>tumor_size</code>,<code>inv_nodes</code> and <code>age</code> are both contributed a lot to the predictions of both classes. Their huge magnitude of the SHAP values indicates their strength of the contribution which is consistent with the conclusion made previously that they are four most important features of the model.</p>
+<p>Also, we can see many features don’t have stable performance in SHAP values. Especially,for features <code>age</code>, we can see the shap values of two samples are totally opposite, and both values are quite large which indicates its large contributions to predictions to both classes. Its magnitude of the SHAP values in both negative and positive side indicates their poor difference in sample distribution among 2 classes. We have scatterplot the distribution of each feature among classes, and indeed, all these features have similar distribution in classes.</p>
+<p>As for the prediction preference of the model, take a perspective of all the features, the general trend is that most features make more contributions in predicting class <code>noreoccur</code>, the several most important features like <code>tumor_size</code> and <code>inv_nodes</code>, it makes more contributions in predicting class <code>noreoccur</code> , for feature <code>age</code> and <code>deg_malig</code>, they probably make more contributions in predicting class <code>reoccur</code> while with a small gap in contributions make to another class. And this is very important for us to explain why the model prefer to predict the samples as class <code>noreoccur</code>.</p>
+</div>
+</div>
+<div id="partial-dependecy" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Partial Dependecy<a href="random-forest.html#partial-dependecy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To verify why different features have such shap value performance, here we study the marginal effect of the one selected numeric feature <code>age</code> and <code>tumor_size</code> by using partial dependency plots.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-26-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p>From the PDPs above, first for feature <code>age</code>, the general trend is that the breast cancer recurrence possibility is increasing as age increases. and around age of 60, the risk is at the peak. And when people are old than 60, however the risk is decreasing sharply. it’s easy for us to interpret the increasing risks as age grow, for the human would have a more vulnerable immune system at an older age, while it’s strange to see lower risk around age 70.</p>
+<p>As for the feature <code>tumor_size</code>, we can see generally, smaller tumor_size leads to a higher risk of breast cancer recurrence, while there are still some fluctuations. And we interpret the trend like, the smaller tumor means more room and potential to grow, leading to a higher chance of breast cancer recurrence.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="logistic-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reflections.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ReallaggyWang/Breast-Cancer/edit/main/model3.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ReallaggyWang/Breast-Cancer/blob/main/model3.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
