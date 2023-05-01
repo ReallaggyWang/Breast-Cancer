@@ -5,6 +5,10 @@ attribute-information
 the-modeling-goal
 the-models-for-using
 k-nearest-neighbors
+general-knn-model
+factor-knn-model
+factor-sample-distribution
+factor-model-prediction
 logistic-regression
 general-logistic-regression-model
 logistic-regression-model-based-on-single-variable
@@ -17,3 +21,10 @@ shap-plot-with-one-instance
 shap-plot-with-more-instances
 partial-dependecy
 reflections
+data-limitations
+unbalanced-features
+unbalanced-class
+lack-of-samples
+future-improvements
+dataset
+model-interpretion

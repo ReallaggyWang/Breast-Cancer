@@ -36,7 +36,9 @@ lgmodel <- nnet::multinom(class ~., data = train.X)
 summary(lgmodel)
 
 ```
-  We can conclude the specific model is: $p(reoccur|x_1,x_2,x_3,x_4)=e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}/(1+e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4})$
+  We can conclude the specific model is: $p(reoccur|x_1,x_2,x_3,x_4)=e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}/(1+e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4})$ , these coeffients actually reflect how nifluential these features would be, the most influential feature should be  `deg_malig`, where 1 unit increase of `deg_malig` should increase around $e^{0.7702525}$ possibility.
+  
+  
 
 
 ```{r}

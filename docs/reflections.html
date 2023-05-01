@@ -82,7 +82,15 @@
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#the-modeling-goal"><i class="fa fa-check"></i><b>1.2</b> The modeling goal</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#the-models-for-using"><i class="fa fa-check"></i><b>1.3</b> The models for using</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>2</b> K Nearest Neighbors</a></li>
+<li class="chapter" data-level="2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>2</b> K Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#general-knn-model"><i class="fa fa-check"></i><b>2.1</b> General KNN Model</a></li>
+<li class="chapter" data-level="2.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#factor-knn-model"><i class="fa fa-check"></i><b>2.2</b> 2 Factor KNN Model</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#factor-sample-distribution"><i class="fa fa-check"></i><b>2.2.1</b> 2 Factor Sample Distribution</a></li>
+<li class="chapter" data-level="2.2.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#factor-model-prediction"><i class="fa fa-check"></i><b>2.2.2</b> 2 Factor Model Prediction</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>3</b> Logistic Regression</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="logistic-regression.html"><a href="logistic-regression.html#general-logistic-regression-model"><i class="fa fa-check"></i><b>3.1</b> General Logistic Regression Model</a></li>
@@ -100,7 +108,20 @@
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="random-forest.html"><a href="random-forest.html#partial-dependecy"><i class="fa fa-check"></i><b>4.4</b> Partial Dependecy</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>5</b> Reflections</a></li>
+<li class="chapter" data-level="5" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>5</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="reflections.html"><a href="reflections.html#data-limitations"><i class="fa fa-check"></i><b>5.1</b> Data Limitations</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="reflections.html"><a href="reflections.html#unbalanced-features"><i class="fa fa-check"></i><b>5.1.1</b> Unbalanced Features</a></li>
+<li class="chapter" data-level="5.1.2" data-path="reflections.html"><a href="reflections.html#unbalanced-class"><i class="fa fa-check"></i><b>5.1.2</b> Unbalanced Class</a></li>
+<li class="chapter" data-level="5.1.3" data-path="reflections.html"><a href="reflections.html#lack-of-samples"><i class="fa fa-check"></i><b>5.1.3</b> Lack of Samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="reflections.html"><a href="reflections.html#future-improvements"><i class="fa fa-check"></i><b>5.2</b> Future Improvements</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="reflections.html"><a href="reflections.html#dataset"><i class="fa fa-check"></i><b>5.2.1</b> Dataset</a></li>
+<li class="chapter" data-level="5.2.2" data-path="reflections.html"><a href="reflections.html#model-interpretion"><i class="fa fa-check"></i><b>5.2.2</b> Model Interpretion</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -122,7 +143,35 @@
             <section class="normal" id="section-">
 <div id="reflections" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Reflections<a href="reflections.html#reflections" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="data-limitations" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Data Limitations<a href="reflections.html#data-limitations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="unbalanced-features" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Unbalanced Features<a href="reflections.html#unbalanced-features" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Breast cancer dataset we choose totally has 9 features and we only have 3 continuous variables and the rest 6 features are all categorical. And these continuous variables are represented in range, before building the model, we first need to take random numbers from the related ranges, which could lead a unstable error.</p>
+</div>
+<div id="unbalanced-class" class="section level3 hasAnchor" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Unbalanced Class<a href="reflections.html#unbalanced-class" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the original dataset, the number of two classes are not balanced, where we have more class <code>noreoccur</code> than class <code>reoccur</code>, this unbalance can affect the training performance of the model.
+<img src="finalproj_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="lack-of-samples" class="section level3 hasAnchor" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Lack of Samples<a href="reflections.html#lack-of-samples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Our dataset totally has 277 samples, while for machine learning models, these data are far from enough, to have a better performance of training, that’s also why when we find the unbalanced distribution of sample classes, we give up resampling method to train the model to avoid a lack of data.</p>
+</div>
+</div>
+<div id="future-improvements" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Future Improvements<a href="reflections.html#future-improvements" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="dataset" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Dataset<a href="reflections.html#dataset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Seeking for a dataset with enough samples, normality and balanced distribution.</p>
+</div>
+<div id="model-interpretion" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Model Interpretion<a href="reflections.html#model-interpretion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>I mainly focus on analyzing why lead to this distribution, or why lead to this model performance. While I pay less attention to interpret what the result is. From all the plots we made, we can see all the three models are not that good, and sometimes it’s hard for me to make a clear and efficient conclusion about the specific result, like it’s hard for me conclude how would the recurrence risk change as one feature changed.</p>
+<p>In order to better figure out some useful insights with the limited data, <strong>survival analysis</strong> method would be a good choice. It can better analyze the effect of different features and better predict the change of the risk.</p>
 
+</div>
+</div>
 </div>
             </section>
 

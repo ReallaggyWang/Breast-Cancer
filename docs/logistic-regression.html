@@ -82,7 +82,15 @@
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#the-modeling-goal"><i class="fa fa-check"></i><b>1.2</b> The modeling goal</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#the-models-for-using"><i class="fa fa-check"></i><b>1.3</b> The models for using</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>2</b> K Nearest Neighbors</a></li>
+<li class="chapter" data-level="2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>2</b> K Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#general-knn-model"><i class="fa fa-check"></i><b>2.1</b> General KNN Model</a></li>
+<li class="chapter" data-level="2.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#factor-knn-model"><i class="fa fa-check"></i><b>2.2</b> 2 Factor KNN Model</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#factor-sample-distribution"><i class="fa fa-check"></i><b>2.2.1</b> 2 Factor Sample Distribution</a></li>
+<li class="chapter" data-level="2.2.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#factor-model-prediction"><i class="fa fa-check"></i><b>2.2.2</b> 2 Factor Model Prediction</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>3</b> Logistic Regression</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="logistic-regression.html"><a href="logistic-regression.html#general-logistic-regression-model"><i class="fa fa-check"></i><b>3.1</b> General Logistic Regression Model</a></li>
@@ -100,7 +108,20 @@
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="random-forest.html"><a href="random-forest.html#partial-dependecy"><i class="fa fa-check"></i><b>4.4</b> Partial Dependecy</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>5</b> Reflections</a></li>
+<li class="chapter" data-level="5" data-path="reflections.html"><a href="reflections.html"><i class="fa fa-check"></i><b>5</b> Reflections</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="reflections.html"><a href="reflections.html#data-limitations"><i class="fa fa-check"></i><b>5.1</b> Data Limitations</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="reflections.html"><a href="reflections.html#unbalanced-features"><i class="fa fa-check"></i><b>5.1.1</b> Unbalanced Features</a></li>
+<li class="chapter" data-level="5.1.2" data-path="reflections.html"><a href="reflections.html#unbalanced-class"><i class="fa fa-check"></i><b>5.1.2</b> Unbalanced Class</a></li>
+<li class="chapter" data-level="5.1.3" data-path="reflections.html"><a href="reflections.html#lack-of-samples"><i class="fa fa-check"></i><b>5.1.3</b> Lack of Samples</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="reflections.html"><a href="reflections.html#future-improvements"><i class="fa fa-check"></i><b>5.2</b> Future Improvements</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="reflections.html"><a href="reflections.html#dataset"><i class="fa fa-check"></i><b>5.2.1</b> Dataset</a></li>
+<li class="chapter" data-level="5.2.2" data-path="reflections.html"><a href="reflections.html#model-interpretion"><i class="fa fa-check"></i><b>5.2.2</b> Model Interpretion</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -145,7 +166,7 @@
 ## 
 ## Residual Deviance: 228.4528 
 ## AIC: 238.4528</code></pre>
-<p>We can conclude the specific model is: <span class="math inline">\(p(reoccur|x_1,x_2,x_3,x_4)=e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}/(1+e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4})\)</span></p>
+<p>We can conclude the specific model is: <span class="math inline">\(p(reoccur|x_1,x_2,x_3,x_4)=e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}/(1+e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4})\)</span> , these coeffients actually reflect how nifluential these features would be, the most influential feature should be <code>deg_malig</code>, where 1 unit increase of <code>deg_malig</code> should increase around <span class="math inline">\(e^{0.7702525}\)</span> possibility.</p>
 <pre><code>## The prediction error rate is: 0.2363636</code></pre>
 <p>From the AIC and Residual Deviance and the error rate on test dataset, we can see the model is not that ideal, and we then visualize the prediction outcomes to check the specific situation.</p>
 <p>Due to a multifactor logistic regression, here we define
