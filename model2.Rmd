@@ -1,0 +1,160 @@
+# Logistic Regression
+
+## General Logistic Regression Model
+The second model we are going to use is the **Logistic Regression Model**.
+
+We first build Logistic Regression model based on all the sleceted variables: `tumor_zise`, `age`, `inv_nodes`, `deg_malig`.
+
+The train_dataset: test_dataset = 8:2.
+```{r echo=FALSE}
+library(tidyverse)
+library(caret)
+library(nnet)
+
+set.seed(5293)
+data = read.csv('breast-cancer_data.csv')
+# create a categorical variable for low or high mpg 
+data$class <- factor(ifelse(data$class == 1, "reoccur", "noreoccur"))
+
+# standardize weight and displacement
+data_selected <- scale(data[,c("age", "inv_nodes","tumor_size","deg_malig")]) # returns matrix
+data_selected = as.data.frame(data_selected)
+data_selected$class <- data$class
+#data_selected <- scale(data[,1:ncol(data)]) # returns matrix
+
+
+# split the data into training and test sets
+test <- sample(nrow(data_selected), 0.2*nrow(data_selected)) # choose 10 rows for test data
+train.X <- data_selected[-test,]
+test.X <- data_selected[test,]
+train.Y <- data$class[-test]
+test.Y <- data$class[test]
+
+train.X$class <- relevel(train.X$class, ref = "noreoccur")
+#train.X = as.data.frame(train.X)
+lgmodel <- nnet::multinom(class ~., data = train.X)
+summary(lgmodel)
+
+```
+  We can conclude the specific model is: $p(reoccur|x_1,x_2,x_3,x_4)=e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}/(1+e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4})$
+
+
+```{r}
+predicted.classes <- lgmodel %>% predict(test.X)
+cat("The prediction error rate is:",mean(predicted.classes != test.Y))
+```
+
+From the AIC and Residual Deviance and the error rate on test dataset, we can see the model is not that ideal, and we then visualize the prediction outcomes to check the specific situation. 
+
+  Due to a multifactor logistic regression, here we define 
+  $temp = -1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4$ 
+
+  We make plot that class versus temp values, then the **cut-off line** would be $temp=0$, where
+  $e^{-1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4}=1$.
+
+
+```{r}
+logit <- function(temp){
+  return(exp(1)^temp/(1+exp(1)^temp))
+}
+
+library(ggplot2)
+test.X$temp = -1.150476-test.X$age*0.2245484+0.3202189*test.X$inv_nodes+0.1335999*test.X$tumor_size+0.7702525*test.X$deg_malig
+test.X$mpgclass = ifelse(test.X$class=='noreoccur',0,1)
+test.X$pred = ifelse(test.X$class==predicted.classes,'correct','incorrect')
+
+# draw the plot
+ggplot(test.X,aes(temp,mpgclass,color = pred))+
+  geom_point(alpha=0.75,size=4)+
+  geom_function(fun=logit,color="blue")+
+  geom_hline(yintercept = 0.5,lty='dashed')+
+  geom_vline(xintercept = 0,lty='dashed')+
+  theme(legend.position = "top")
+  
+
+```
+
+  We can see that when in class `noreoccur`, the prediction is quite perfect, while all the errors happened in the class  `reoccur`, the prediction is quite different with the truth. Inspired by the partial dependency, we can also plot the distribution of each factor to check the effect of the factor for classification.
+  
+## Logistic Regression Model Based on Single Variable
+```{r}
+library(gridExtra)
+library(ggplot2)
+data_selected = as.data.frame(data_selected)
+data_selected$mpgclass = ifelse(data_selected$class=='noreoccur',0,1)
+
+logit2 <- function(x,b0,b1){
+  return(exp(1)^(b0+b1*x)/(1+exp(1)^(b0+b1*x)))
+}
+m1 <- glm(class~age,family = "binomial",data=data_selected)
+m2 <- glm(class~inv_nodes,family = "binomial",data=data_selected)
+m3 <- glm(class~tumor_size,family = "binomial",data=data_selected)
+m4 <- glm(class~deg_malig,family = "binomial",data=data_selected)
+
+plot1<-ggplot(data_selected,aes(age,mpgclass))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_function(fun=logit2,args=list(b0=coef(m1)[1],b1=coef(m1)[2]), color="blue")+
+  geom_hline(yintercept = 0.5,lty='dashed')+
+  labs(x='age', y='mpgclass',color = 'class')
+plot2<-ggplot(data_selected,aes(inv_nodes,mpgclass))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_function(fun=logit2,args=list(b0=coef(m2)[1],b1=coef(m2)[2]), color="blue")+
+  geom_hline(yintercept = 0.5,lty='dashed')+
+  labs(x='inv_nodes', y='mpgclass',color = 'class')
+plot3<-ggplot(data_selected,aes(tumor_size,mpgclass))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_function(fun=logit2,args=list(b0=coef(m3)[1],b1=coef(m3)[2]), color="blue")+
+  geom_hline(yintercept = 0.5,lty='dashed')+
+  labs(x='tumor_size', y='mpgclass',color = 'class')
+plot4<-ggplot(data_selected,aes(deg_malig,mpgclass))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_function(fun=logit2,args=list(b0=coef(m4)[1],b1=coef(m4)[2]), color="blue")+
+  geom_hline(yintercept = 0.5,lty='dashed')+
+  labs(x='deg_malig', y='mpgclass',color = 'class')
+
+grid.arrange(plot1, plot2, plot3,plot4,ncol = 2,nrow =2)
+```
+ 
+  In our Multi Factors Logistic model,we take the class `noreoccur` as the reference, and we can see all these four factors do not have very significantly differences in distributions between two class, the most obvious factor is `age`, we can see that if the model only judge the class based on `age`, the prediction would all be class `noreoccur`, which indicates the age distribution may be very similar in two classes, also we can conclude the cancer reoccurrence rate may have little relation with `age`. 
+
+  And the best factor we can say from the above figures is `inv_nodes`, because the model more possibility to predict the sample as class `reoccur`. While the rest three factors would have less possibility to predict the sample as class `reoccur`. This tendency of distribution manily leads to that the logistic model based on all four factors may not tell the difference of two classes and have a tendency to predcit the sample as class `noreoccur`. We can also study the features of correct predictions to prove this.
+
+
+## Feature Distribution 
+
+Here we again plot the distribution of different features, and we use different color to represent the correct and wrong predictions,
+
+```{r}
+plot1<-ggplot()+
+  geom_point(aes(age,mpgclass,color=test.X$pred),alpha = 0.5, size=2,test.X)+
+  labs(x='age', y='mpgclass',color = 'class')
+plot2<-ggplot()+
+  geom_point(aes(inv_nodes,mpgclass,color = test.X$pred),alpha = 0.5, size=2,test.X)+
+  labs(x='inv_nodes', y='mpgclass',color = 'class')
+plot3<-ggplot()+
+  geom_point(aes(tumor_size,mpgclass,color = test.X$pred),alpha = 0.5, size=2,test.X)+
+  labs(x='tumor_size', y='mpgclass',color = 'class')
+plot4<-ggplot()+
+  geom_point(aes(deg_malig,mpgclass,color = test.X$pred),alpha = 0.5, size=2,test.X)+
+  labs(x='deg_malig', y='mpgclass',color = 'class')
+
+grid.arrange(plot1, plot2, plot3,plot4,ncol = 2,nrow =2)
+```
+
+  Again, we can see in class `reoccur`, the correct prediction mostly happened in samples with unique values of factors, specially for feature `inv_nodes`, the correct predicted sample in class `reoccur` seems to have far distance with the other samples in class `reoccur`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

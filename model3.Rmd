@@ -1,0 +1,239 @@
+# Random Forest
+
+
+## General Random Forest Model
+The third model we are going to use is the **Random Forest**.
+
+We first build Random Forest model based on all the variables and the train_dataset: test_dataset = 8:2.
+```{r echo=FALSE}
+library(class) # knn
+library(tidyverse)
+theme_set(theme_classic(12))
+set.seed(5293)
+data = read.csv('breast-cancer_data.csv')
+# create a categorical variable for low or high mpg 
+data$class <- factor(ifelse(data$class == 1, "reoccur", "noreoccur"))
+
+# standardize weight and displacement
+data_selected <- scale(data[,c("age", "inv_nodes","tumor_size","deg_malig")]) # returns matrix
+data_selected = as.data.frame(data_selected)
+data_selected$class = data$class
+data_selected$menopause = data$menopause
+data_selected$node_caps = data$node_caps
+data_selected$breast = data$breast
+data_selected$breast_quad = data$breast_quad
+data_selected$irrdiat = data$irradiat
+# split the data into training and test sets
+test <- sample(nrow(data_selected), 0.2*nrow(data_selected)) # choose 10 rows for test data
+train.X <- data_selected[-test,]
+test.X <- data_selected[test,]
+train.Y <- data$class[-test]
+test.Y <- data$class[test]
+```
+
+
+Let’s first see the error evolution vs. number of trees of the general model:
+
+```{r}
+library(randomForest)
+model <- randomForest(class ~ ., data = train.X)
+plot(model, main="Random Forest: MSE error vs. Num of trees")
+
+```
+
+Where we can see the general trend of the error in model is decreasing, and next we would use the test dataset to obtain the confusion matrix and AUC value of the model to evaluate the performance of the model:
+
+```{r}
+library(pROC)
+y_pred <- predict(model ,test.X)
+print(sprintf("Area under curve (AUC) : %.3f",auc(test.Y, as.numeric(y_pred))))
+```
+Above is the AUC value of the random forest model, where we can say is not ideal, and the value 0.556 mostly means the model is random somehow, next we would focus on the confusion matrix to tee the specific predicting situation:
+
+```{r}
+
+
+plotConfusionMatrix <- function(y_pred,test.Y, sSubtitle) {
+    tst <- data.frame(y_pred, test.Y)
+    opts <- c("Predicted", "True")
+    names(tst) <- opts
+    cf <- plyr::count(tst)
+   
+    ggplot(data =  cf, mapping = aes(x = True, y = Predicted)) +
+      labs(title = "Confusion matrix", subtitle = sSubtitle) +
+      geom_tile(aes(fill = freq), colour = "grey") +
+      geom_text(aes(label = sprintf("%1.0f", freq)), vjust = 1) +
+      scale_fill_gradient(low = "gold", high = "tomato") +
+      theme_bw() + theme(legend.position = "none")
+}
+plotConfusionMatrix(y_pred,test.Y,"Prediction using RandomForest with 500 trees")
+```
+
+We can conclude from the confusion matrix that the model still has a preference to predict class `reoccur` as class `noreoccur`, more specifically, in predictions, there are 50 samples to be considered as class `noreoccur` and only 5 samples to be considered as class `reoccur`.If we want to answer what has lead to this result, we may need to study the features.
+
+We focus on the importance of different features:
+```{r}
+library(gridExtra)
+library(ggplot2)
+varimp <- data.frame(model$importance)
+  vi1 <- ggplot(varimp, aes(x=reorder(rownames(varimp),MeanDecreaseGini), y=MeanDecreaseGini)) +
+  geom_bar(stat="identity", fill="tomato", colour="black") +
+  coord_flip() + theme_bw(base_size = 8) +
+  labs(title="Prediction using RandomForest with 500 trees", subtitle="Variable importance", x="Variable", y="Variable importance")
+vi1
+
+```
+
+As we can see from the figure above, features `tumor_size`,`age`,`inv_nodes`,`deg_malig` still are the main contributing factors. 
+
+## Reduced Random Forest Model
+
+So does this mean if we remove the less influential features and build the model *(which means we use the same features like that in model1 and model2)* on them would have a better model performance? in other words, we want to know that whether removing these less influential features can reduce the model tendency of predicting samples as class `noreoccur`.
+
+We rebuild the random forest model and see the AUC value and the confusion matrix,
+```{r}
+model <- randomForest(class ~ tumor_size+age+inv_nodes+deg_malig , data = train.X)
+y_pred <- predict(model ,test.X)
+print(sprintf("Area under curve (AUC) : %.3f",auc(test.Y, as.numeric(y_pred))))
+```
+
+
+```{r}
+plotConfusionMatrix <- function(y_pred,test.Y, sSubtitle) {
+    tst <- data.frame(y_pred, test.Y)
+    opts <- c("Predicted", "True")
+    names(tst) <- opts
+    cf <- plyr::count(tst)
+   
+    ggplot(data =  cf, mapping = aes(x = True, y = Predicted)) +
+      labs(title = "Confusion matrix", subtitle = sSubtitle) +
+      geom_tile(aes(fill = freq), colour = "grey") +
+      geom_text(aes(label = sprintf("%1.0f", freq)), vjust = 1) +
+      scale_fill_gradient(low = "gold", high = "tomato") +
+      theme_bw() + theme(legend.position = "none")
+}
+plotConfusionMatrix(y_pred,test.Y,"Prediction using RandomForest with 500 trees")
+```
+
+Still, though we have more predictions of class `reoccur`, the model has a preference to predict class `reoccur` as class `noreoccur`.
+
+## Shapley Values
+
+For the preference of the model, here we discuss the Shapley values to study how to fairly distribute the "payout" among features. 
+
+### SHAP plot with one instance
+
+We first plot the Shapley values for one instance,
+
+```{r}
+library(dplyr)
+model <- randomForest(class ~ ., data = train.X)
+pred <- function(model,newdata){
+  predict(model,newdata = newdata,type="prob")[,"noreoccur"]
+}
+shap_values <- fastshap::explain(
+  model,
+  X=train.X,
+  feature_names = colnames(train.X|> dplyr::select(-class)),
+  pred_wrapper = pred,
+  nsim = 5,
+  newdata = test.X[1,]
+)
+shap <- as.data.frame(shap_values) |>
+  pivot_longer(everything(),names_to = 'var',values_to = 'shap_value')
+
+```
+
+```{r}
+library(ggplot2)
+ggplot(shap,aes(x=shap_value,y=reorder(var,shap_value)))+
+  geom_col(aes(fill=as.factor(sign(shap_value))))+
+  geom_vline(xintercept = 0,lty='dashed')+
+  ylab("")+
+  theme_bw(12)+
+  theme(panel.grid.major.y = element_blank(),legend.position = "bottom")
+```
+Let's check the prediction of the sample:
+```{r}
+pred(model,test.X[1,])
+```
+
+We can see the model consider the sample has a probability of 82.4% to be class `noreoccur` , and take a perspective of all the features, the general trend is that most features make more contributions in predicting class `noreoccur`, that's very important for us to explain why the model prefer to predict the samples as class `noreoccur`. Especially for the feature `tumor_size`, `age` and `inv_nodes`, which are the three most important features for the model, they all have a huge magnitude of the SHAP values and this indicates their strength of the contribution to predict sample as class `noreoccur`, that's very important for us to explain why the model think the sample is highly possible to be class `noreoccur`.
+
+
+### SHAP plot with more instances
+
+To study the effect of features deeper, we start to plot the Shapley values for more instances (we use the same instance with previous part),
+
+```{r}
+shap_values <- fastshap::explain(
+  model,
+  X=train.X,
+  feature_names = colnames(train.X|> dplyr::select(-class)),
+  pred_wrapper = pred,
+  nsim = 5,
+  newdata = rbind(test.X[1,],test.X[1,],test.X[1,])
+)
+shap <- as.data.frame(shap_values) |>
+  rownames_to_column("id") |>
+  pivot_longer(-id,names_to = 'var',values_to = 'shap_value')
+
+
+## SHAP plot
+ggplot(shap,aes(x=shap_value,y=reorder(var,shap_value)))+
+  geom_col(aes(fill=id),position = "dodge")+
+  geom_vline(xintercept = 0,lty='dashed')+
+  ylab("")+
+  theme_bw(12)+
+  theme(panel.grid.major.y = element_blank(),legend.position = "bottom")
+```
+
+Here we take class `noreoccur` as the positive reference. Surprisingly, many factors like `deg_malig`, `tumor_size`,`inv_nodes` and `age` are both contributed a lot to the predictions of both classes. Their huge magnitude of the SHAP values indicates their strength of the contribution which is consistent with the conclusion made previously that they are four most important features of the model.
+
+Also, we can see many features don't have stable performance in SHAP values. Especially,for features `age`, we can see the shap values of two samples are totally opposite, and both values are quite large which indicates its large contributions to predictions to both classes. Its magnitude of the SHAP values in both negative and positive side indicates their poor difference in sample distribution among 2 classes. We have scatterplot the distribution of each feature among classes, and indeed, all these features have similar distribution in classes.
+
+As for the prediction preference of the model, take a perspective of all the features, the general trend is that most features make more contributions in predicting class `noreoccur`, the several most important features like `tumor_size` and `inv_nodes`, it makes more contributions in predicting class `noreoccur` , for feature `age` and `deg_malig`, they probably make more contributions in predicting class `reoccur`  while with a small gap in contributions make to another class. And this is very important for us to explain why the model prefer to predict the samples as class `noreoccur`.
+
+## Partial Dependecy 
+
+To verify why different features have such shap value performance, here we study the marginal effect of the one selected numeric feature `age` and `tumor_size` by using partial dependency plots.
+
+```{r}
+library(pdp)
+library(ggplot2)
+library(gridExtra)
+model <- randomForest(class ~ ., data = data[-test,])
+pdp_age = partial(model,pred.var = 'age')
+pdp_ts = partial(model,pred.var = 'tumor_size')
+g = ggplot(pdp_age,aes(age,yhat))+geom_line()+geom_rug(data =  data[-test,],aes(age),inherit.aes = FALSE, alpha = .5,color='red')+theme_bw(16)
+g+geom_point(size = 1) + ggtitle("values of age evenly spaced")+ylab('cancer recurrence posibility')
+g2 = ggplot(pdp_ts,aes(tumor_size,yhat))+geom_line()+geom_rug(data =  data[-test,],aes(tumor_size),inherit.aes = FALSE, alpha = .5,color='red')+theme_bw(16)
+g2+geom_point(size = 1) + ggtitle("values of tumor_size evenly spaced")+ylab('cancer recurrence posibility')
+
+```
+
+
+From the PDPs above, first for feature `age`, the general trend is that the breast cancer recurrence possibility is increasing as age increases. and around age of 60, the risk is at the peak. And when people are old than 60, however the risk is decreasing sharply. it's easy for us to interpret the increasing risks as age grow, for the human would have a more vulnerable immune system at an older age, while it's strange to see lower risk around age 70.
+
+As for the feature `tumor_size`, we can see generally, smaller tumor_size leads to a higher risk of breast cancer recurrence, while there are still some fluctuations. And we interpret the trend like, the smaller tumor means more room and potential to grow, leading to a higher chance of breast cancer recurrence.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

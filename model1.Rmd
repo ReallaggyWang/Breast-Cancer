@@ -1,0 +1,119 @@
+# K Nearest Neighbors
+
+```{r}
+library(class) # knn
+library(tidyverse)
+theme_set(theme_classic(12))
+set.seed(5293)
+data = read.csv('breast-cancer_data.csv')
+# create a categorical variable for low or high mpg 
+data$class <- factor(ifelse(data$class == 1, "reoccur", "noreoccur"))
+
+# standardize weight and displacement
+data_selected <- scale(data[,c("age", "inv_nodes","tumor_size","deg_malig")]) # returns matrix
+# split the data into training and test sets
+test <- sample(nrow(data_selected), 0.2*nrow(data_selected)) # choose 10 rows for test data
+train.X <- data_selected[-test,]
+test.X <- data_selected[test,]
+train.Y <- data$class[-test]
+test.Y <- data$class[test]
+
+
+# run the algorithm
+knn.pred <- knn(train = train.X, test = test.X, cl = train.Y, k = 4)
+
+# calculate error rate
+er <- mean(knn.pred != test.Y)
+cat("The prediction error rate is:",er)
+```
+```{r}
+
+library(gridExtra)
+library(ggplot2)
+set.seed(5293)
+data_selected = as.data.frame(data_selected)
+plot1<-ggplot(data_selected,aes(age,tumor_size,color = data$class))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_hline(yintercept = 0,color = 'grey')+
+  geom_vline(xintercept = 0,color = 'grey')+
+  labs(x='age', y='tumor_size',color = 'class')
+plot2<-ggplot(data_selected,aes(age,tumor_size,color = data$class))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_hline(yintercept = 0,color = 'grey')+
+  geom_vline(xintercept = 0,color = 'grey')+
+  labs(x='age', y='inv_nodes',color = 'class')
+plot3<-ggplot(data_selected,aes(age,deg_malig,color = data$class))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_hline(yintercept = 0,color = 'grey')+
+  geom_vline(xintercept = 0,color = 'grey')+
+  labs(x='age', y='deg_malig',color = 'class')
+plot4<-ggplot(data_selected,aes(tumor_size,inv_nodes,color = data$class))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_hline(yintercept = 0,color = 'grey')+
+  geom_vline(xintercept = 0,color = 'grey')+
+  labs(x='tumor_size', y='inv_nodes',color = 'class')
+plot5<-ggplot(data_selected,aes(tumor_size,deg_malig,color = data$class))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_hline(yintercept = 0,color = 'grey')+
+  geom_vline(xintercept = 0,color = 'grey')+
+  labs(x='tumor_size', y='deg_malig',color = 'class')
+plot6<-ggplot(data_selected,aes(inv_nodes,deg_malig,color = data$class))+
+  geom_point(alpha = 0.5, size=2)+
+  geom_hline(yintercept = 0,color = 'grey')+
+  geom_vline(xintercept = 0,color = 'grey')+
+  labs(x='inv_nodes', y='deg_malig',color = 'class')
+grid.arrange(plot1, plot2, plot3,plot4,plot5,plot6,ncol = 2,nrow = 3)
+```
+
+
+
+
+
+
+```{r}
+# standardize weight and displacement
+data_selected <- scale(data[,c("inv_nodes", "deg_malig")]) # returns matrix
+# split the data into training and test sets
+test <- sample(nrow(data_selected), 0.2*nrow(data_selected)) # choose 10 rows for test data
+train.X <- data_selected[-test,]
+test.X <- data_selected[test,]
+train.Y <- data$class[-test]
+test.Y <- data$class[test]
+error = c()
+for(i in 1:10){
+  knn.preds <- knn(train = train.X, test = test.X, cl = train.Y, k = i)
+  error[i] <- mean(knn.preds != test.Y)
+}
+error
+```
+
+
+```{r}
+# run the algorithm
+knn.pred <- knn(train = train.X, test = test.X, cl = train.Y, k = 5)
+
+# calculate error rate
+er <- mean(knn.pred != test.Y)
+cat("The prediction error rate is:",er)
+
+```
+
+
+
+```{r}
+library('ggplot2')
+data_selected = as.data.frame(data_selected)
+ggplot()+
+  geom_point(aes(inv_nodes,deg_malig,color = data$class[-test]),data=data_selected[-test,],alpha = 0.5, size=2)+
+  geom_point(aes(inv_nodes,deg_malig,color = data$class[test]),data=data_selected[test, ],alpha = 0.5 ,size = 4)+
+  geom_point(aes(inv_nodes,deg_malig,color = knn.pred),data=data_selected[test, ],shape = 1,size = 6)+
+  scale_color_discrete(name = 'mpg_class')+
+  labs(title ='K = 5\nerror rate = 0.2545455', x='inv_nodes', y='deg_malig',color = 'class')+
+  geom_text(aes(x=1,y=-1),label = '(outer circle = predicted class)')
+```
+
+
+
+
+
+
