@@ -44,5 +44,5 @@ To predict if there is a breast cancer recurrence based on features age,tumor-si
 
 ***template*** coming from:
 
-(https://github.com/jtr13/IMLVtemplate)
+https://github.com/jtr13/IMLVtemplate
 
