@@ -1,48 +1,69 @@
-This is the IMLV final project of **Ruiqi Wang**
-
-UNI:rw2965
-
-Contact: rw2965@columbia.edu
-
-It is based on the template created with *File, New Project..., New Directory, Book Project using bookdown* in RStudio. 
-
-And this is the basic introduction of my project
-
-## Dataset
-
-The Breat Cancer Dataset:
-
-[The Original Dataset Link](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer)
-
-### Describtion 
-
-This is one of three domains provided by the Oncology Institute that has repeatedly appeared in the machine learning literature. (See also lymphography and primary-tumor.)
-
-This data set includes `201 instances` of one class and `85 instances` of another class.  The instances are described by 9 attributes, some of which are linear and some are nominal. 
-
-###  Attribute Information
-
-- [ ] `class:` no-recurrence-events, recurrence-events 
-- [ ] `age:` 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, 70-79, 80-89, 90-99.
-- [ ] `menopose:`lt40, ge40, premeno.
-- [ ] `tumor-size:` 0-4, 5-9, 10-14, 15-19, 20-24, 25-29, 30-34, 35-39, 40-44, 45-49, 50-54, 55-59.
-- [ ] `inv-nodes:` 0-2, 3-5, 6-8, 9-11, 12-14, 15-17, 18-20, 21-23, 24-26, 27-29, 30-32, 33-35, 36-39.
-- [ ] `node-caps:`yes, no.
-- [ ] `deg-malig:` 1, 2, 3.
-- [ ] `breast:` left, right.
-- [ ] `breast-quad:` left-up, left-low, right-up,	right-low, central.
-- [ ] `irradiat:`	yes, no.
+This is a template for the IMLV final project. It is based on the template created with *File, New Project..., New Directory, Book Project using bookdown* in RStudio. 
 
 
-## The modeling goal
-To predict if there is a breast cancer recurrence based on features age,tumor-size, inv-nodes...
+## ABSOLUTE ESSENTIALS
 
-## The models for using
-* `Logistic Regression`
-* `KNN`
-* `Random forest`
+*If you have any difficulties or have feedback of any kind, please file an issue or communicate through [Discussions](https://github.com/jtr13/IMLVtemplate/discussions).*
 
-***template*** coming from:
+### Copy this template (GitHub)
 
-https://github.com/jtr13/IMLVtemplate
+- [ ] 1. Click the green "Use this template" button above.  DO NOT FORK THE REPO. Choose a descriptive name for your repo, such as "federalbudget" or "AIDSdeaths".  (If you change your mind before you do any work, delete your new repo and start over.)
+
+- [ ] 2. In the Description field, write: "Bookdown source files for IMLV final project".
+
+### Set up Pages (GitHub)
+
+- [ ] 1. On the home page of your repo, click Settings. Click the "Pages" section on the left. In the **Build and Deployment** section, set **Source** to "Deploy from a branch" (Classic Pages experience) and **Branch** to **main** with **/docs** folder. Click Save. Above the **Build and Deployment** section, a box will appear with your book's URL. Copy the URL. (Note that sometimes there is a delay until your book actually appears at that URL. If it doesn't appear after a few minutes, make a change and commit it to trigger a GitHub Pages build.)	
+
+- [ ] 2. Click the gear button near "About" on the home page of the repo and paste your book URL into the **Website** field that appears on the right.
+
+### Copy the repo link (GitHub)
+
+- [ ] 1. Click the green Code button and copy the link under HTTPS. It should have the format: `https://github.com/[USERNAME]/[REPO NAME].git`
+
+### Clone the repo (RStudio)
+
+- [ ] 1. Clone your new repo with *File, New Project..., Version Control, Git* in RStudio. You will need to paste the link from the previous step in the Repository URL box.
+
+### Edit some key files (RStudio)
+
+- [ ] 1. In `index.Rmd`, change YOUR TITLE HERE to your title.
+
+- [ ] 2. In `index.Rmd`, change YOUR NAMES HERE to your names.
+
+- [ ] 3. In `_bookdown.yml`, change YOUR GITHUB USERNAME to your GitHub username in the two places it appears.
+
+- [ ] 4. In `_bookdown.yml`, change YOUR GITHUB REPO to your GitHub repo name in the two places it appears.
+
+(Note that 3. and 4. provide links to the `.Rmd` files of your project for editing and viewing. If you move your `.Rmd` files you will need to update these file paths. Once your book is rendered, test that the edit (pen) and view (eye) buttons work.)
+
+- [ ] 5. In `_output.yml`, change YOUR SHORT TITLE to a shortened version of your title. (Leave the "after:" line indicating that the book was published with bookdown as is.)
+
+### Render the book (RStudio)
+
+- [ ] 1. Install **bookdown** with `install.packages("bookdown")`. If you already have it, update to the most recent version.
+
+- [ ] 2. Render locally with `bookdown::render_book("index.Rmd")` or clicking the *Build book* button which should appear in the Build tab (in the same pane as Environment, History, Connections, ...).
+
+- [ ] 3. Use `browseURL("docs/index.html")` to view your book locally (or just open `index.html` in a browser).
+
+- [ ] 4. If it looks good, commit and push all changed files to GitHub. 
+
+(You will need to repeat steps 2 and 4 every time you wish to update the book online.)
+
+### Edit README	(GitHub or RStudio)
+
+Once you've completed these steps, delete the content of this **README** and add a short description of your project with a link to the book URL. It would be appreciated if you add the following to the end:	
+
+*This repo was initially generated from a bookdown template available here: https://github.com/jtr13/IMLVtemplate.*	
+
+### Demo Video	
+
+A demo video showing how to create a **bookdown book** following these similar instructions: http://bit.ly/fiveminutebookdown Note that this video uses a different template.
+
+### Additional features	
+
+Please consult the official guide to **bookdown**: https://bookdown.org/yihui/bookdown
+
+
 

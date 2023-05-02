@@ -8,7 +8,10 @@ site: bookdown::bookdown_site
 # Proposal
  ![](1.jpg)
 
-## Breast Cancer Data
+## Dataset
+
+The Breat Cancer Dataset:
+
 [The Original Dataset Link](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer)
 
 ### Describtion 

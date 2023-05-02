@@ -46,9 +46,10 @@ predicted.classes <- lgmodel %>% predict(test.X)
 cat("The prediction error rate is:",mean(predicted.classes != test.Y))
 ```
 
+
 From the AIC and Residual Deviance and the error rate on test dataset, we can see the model is not that ideal, and we then visualize the prediction outcomes to check the specific situation. 
 
-  Due to a multifactor logistic regression, here we define 
+  Due to a multifactors logistic regression, here we define 
   $temp = -1.1504766-0.2245484x_1+0.3202189x_2+0.1335999x_3+0.7702525x_4$ 
 
   We make plot that class versus temp values, then the **cut-off line** would be $temp=0$, where

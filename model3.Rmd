@@ -153,6 +153,7 @@ ggplot(shap,aes(x=shap_value,y=reorder(var,shap_value)))+
   theme_bw(12)+
   theme(panel.grid.major.y = element_blank(),legend.position = "bottom")
 ```
+
 Let's check the prediction of the sample:
 ```{r}
 pred(model,test.X[1,])
